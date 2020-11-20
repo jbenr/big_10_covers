@@ -1,7 +1,7 @@
 import pandas as pd
 import xlrd
 # Reads excel file as a DataFrame object
-df = pd.read_excel("17_18_games.xls", parse_dates=["Date"])
+df = pd.read_excel("/Users/benjamin/school/big-10-covers/17_18_games.xls", parse_dates=["Date"])
 
 # This is pulling the first n rows from the DataFrame object
 df.head(2)
@@ -20,7 +20,7 @@ y_true = df["Home Win"].values
 
 # which team is better in previous year's standings.
 # https://www.sports-reference.com/cbb/conferences/big-ten/2017.html
-standing = pd.read_excel("16_17_standings.xls")
+standing = pd.read_excel("/Users/benjamin/school/big-10-covers/16_17_standings.xls")
 
 df["Home Last Win"] = False
 df["Visitor Last Win"] = False
