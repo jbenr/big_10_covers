@@ -15,7 +15,7 @@ y_true = df["Home Win"].values
 # Array now holds class values in format that scikit learn can read
 
 
-# Let's try see which team is better in previous year's standings.
+# which team is better in previous year's standings.
 # https://www.sports-reference.com/cbb/conferences/big-ten/2017.html
 standing = pd.read_excel("16_17_standings.xls")
 
@@ -28,7 +28,7 @@ for index, row in df.iterrows():
     visitor_team = row["Visitor"]
     row["Home Last Win"] = won_last[home_team]
     row["Visitor Last Win"] = won_last[visitor_team]
-    df.ix[index] = row
+    df.loc[index] = row
     #We then set our dictionary with the each team's result (from this row) for the next
     #time we see these teams.
     #Set current Win
@@ -45,7 +45,7 @@ for index, row in df.iterrows():
     visitor_team = row["Visitor"]
     row["Home Win Streak"] = win_streak[home_team]
     row["Visitor Win Streak"] = win_streak[visitor_team]
-    df.ix[index] = row    
+    df.loc[index] = row    
     # Set current win
     if row["Home Win"]:
         win_streak[home_team] += 1
@@ -62,7 +62,7 @@ for index , row in df.iterrows():
     home_rank = standing[standing["School"] == home_team]["Rk"].values[0]
     visitor_rank = standing[standing["School"] == visitor_team]["Rk"].values[0]
     row["Home Rank Higher"] = int(home_rank > visitor_rank)
-    df.ix[index] = row
+    df.loc[index] = row
 
 # Which team won their last encounter team regardless of playing at home
 last_match_winner = defaultdict(int)
@@ -73,7 +73,7 @@ for index , row in df.iterrows():
     teams = tuple(sorted([home_team, visitor_team]))
     
     row["Home Won Last"] = 1 if last_match_winner[teams] == row["Home"] else 0
-    df.ix[index] = row
+    df.loc[index] = row
     # Who won this one?
     winner = row["Home"] if row["Home Win"] else row["Visitor"]
     last_match_winner[teams] = winner
@@ -117,7 +117,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 import sklearn.metrics
 
-X_small = df[['Home Team Ranks Higher', 'Home Win Streak']]
+X_small = df[['Home Ranks Higher', 'Home Win Streak']]
 pred_train, pred_test, tar_train, tar_test  =   train_test_split(X_small, y_true, test_size=.4)
 
 #Build model on training data
@@ -141,9 +141,8 @@ out = StringIO()
 tree.export_graphviz(classifier, out_file=out)
 
 import pydotplus
-graph=pydotplus.graph_from_dot_data(out.getvalue())
+graph = pydotplus.graph_from_dot_data(out.getvalue())
 Image(graph.create_png())
-
 
 #Random forest classifiers
 from sklearn.ensemble import RandomForestClassifier
@@ -152,7 +151,26 @@ scores = cross_val_score(clf, X_all, y_true, scoring='accuracy')
 print("Using full team labels is ranked higher")
 print("Accuracy: {0:.1f}%".format(np.mean(scores) * 100))
 
+from sklearn.model_selection import GridSearchCV
 
+parameter_space = {
+"max_features": [2, 10, 'auto'],
+"n_estimators": [100,],
+"criterion": ["gini", "entropy"],
+"min_samples_leaf": [2, 4, 6],
+}
+clf = RandomForestClassifier(random_state=14)
+grid = GridSearchCV(clf, parameter_space)
+grid.fit(X_all, y_true)
+print("Accuracy: {0:.1f}%".format(grid.best_score_ * 100))
+
+print(grid.best_estimator_)
+RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+            max_depth=None, max_features=2, max_leaf_nodes=None,
+            min_impurity_split=1e-07, min_samples_leaf=4,
+            min_samples_split=2, min_weight_fraction_leaf=0.0,
+            n_estimators=100, n_jobs=1, oob_score=False, random_state=14,
+            verbose=0, warm_start=False)
 
 # Will be the main file
 
