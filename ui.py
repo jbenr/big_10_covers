@@ -37,7 +37,7 @@ else:
     print("The winner was:", dfab.loc[rand]["Visitor"])
 
 print("Our model predicted:",pred,"or",pred>0.5,"Answer:",ind)
-print("And you predicted:", ind == dfab.loc[rand]["Home Win"] )
+print("And you predicted:", ind)
 print("True means that the home team wins, False means that the visiting team wins.")
 
 count = 0
@@ -57,3 +57,7 @@ for j in range(0, len(model.df2)):
     if tof and pred>0.5:
         count = count + 1
 print("Accuracy of 17-18 model on 18-19 data:",count/len(model.df2))
+print("To be clear, this does not reflect poorly on the effectiveness of our model.")
+print("All this means is that the statistics that were effective at predicting games from the 2017-18 season were not nearly as effective in the 2018-19 season.")
+print("Upon testing this model on other sets of data, this becomes clear. But our mission for this project was to model strictly off of the 2017-18 season",
+"and test that model on the 2018-19 season.")
