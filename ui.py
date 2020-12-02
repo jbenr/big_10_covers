@@ -2,7 +2,7 @@ import model
 import random
 import pandas as pd
 
-dfab = pd.read_excel("/Users/benjamin/school/big-10-covers/18_19_games.xls", parse_dates=["Date"])
+dfab = pd.read_excel("/Users/benjamin/school/big_10_covers/18_19_games.xls", parse_dates=["Date"])
 dfab.columns = ["Date", "Visitor", "V_Points", "Home", "H_Points", "OT", "Notes"]
 dfab["Home Win"] = dfab["V_Points"] < dfab["H_Points"]
 
@@ -36,8 +36,9 @@ if dfab.loc[rand]["Home Win"] == True:
 else:
     print("The winner was:", dfab.loc[rand]["Visitor"])
 
-print("Our model predicted:",pred,"or",pred>0.5,"Answer:",ind)
-print("And you predicted:", ind)
+print("Our model predicted:",pred,"or",pred>0.5)
+print("Answer:",ind)
+print("And you predicted:",bool(inp))
 print("True means that the home team wins, False means that the visiting team wins.")
 
 count = 0
@@ -54,7 +55,7 @@ for j in range(0, len(model.df2)):
     i = model.df2[j][8]
     pred = model.rf_most_important.predict([[a, b, c, d, e, f, g, h, i]])
     tof = dfab.loc[j]["Home Win"]
-    if tof and pred>0.5:
+    if (tof==True and pred>0.5) or (tof==False and pred<0.5):
         count = count + 1
 print("Accuracy of 17-18 model on 18-19 data:",count/len(model.df2))
 print("To be clear, this does not reflect poorly on the effectiveness of our model.")

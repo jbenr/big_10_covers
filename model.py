@@ -2,8 +2,8 @@ import pandas as pd
 import xlrd
 from collections import defaultdict
 # Reads excel file as a DataFrame object
-df = pd.read_excel("/Users/benjamin/school/big-10-covers/17_18_games.xls", parse_dates=["Date"])
-df2 = pd.read_excel("/Users/benjamin/school/big-10-covers/18_19_games.xls", parse_dates=["Date"])
+df = pd.read_excel("/Users/benjamin/school/big_10_covers/17_18_games.xls", parse_dates=["Date"])
+df2 = pd.read_excel("/Users/benjamin/school/big_10_covers/18_19_games.xls", parse_dates=["Date"])
 
 # Renaming columns
 df.columns = ["Date", "Visitor", "V_Points", "Home", "H_Points", "OT", "Notes"]
@@ -24,12 +24,12 @@ y_true2 = df2["Home Win"].values
 
 # which team is better in previous year's standings.
 # https://www.sports-reference.com/cbb/conferences/big-ten/2017.html
-standing = pd.read_excel("/Users/benjamin/school/big-10-covers/16_17_standings.xls")
-standing2 = pd.read_excel("/Users/benjamin/school/big-10-covers/17_18_standings.xls")
+standing = pd.read_excel("/Users/benjamin/school/big_10_covers/16_17_standings.xls")
+standing2 = pd.read_excel("/Users/benjamin/school/big_10_covers/17_18_standings.xls")
 
 # stats
-stats = pd.read_excel("/Users/benjamin/school/big-10-covers/17_18_stats.xls")
-stats2 = pd.read_excel("/Users/benjamin/school/big-10-covers/18_19_stats.xls")
+stats = pd.read_excel("/Users/benjamin/school/big_10_covers/17_18_stats.xls")
+stats2 = pd.read_excel("/Users/benjamin/school/big_10_covers/18_19_stats.xls")
 
 teams = ["Indiana", "Ohio State", "Northwestern", "Purdue", "Illinois", "Iowa", "Rutgers", "Nebraska",
  "Michigan", "Maryland", "Wisconsin,", "Michigan State", "Penn State", "Minnesota"]
